@@ -1,15 +1,15 @@
 // app/api/summarize/route.js
-
 export async function POST(req) {
   const { content } = await req.json();
 
-  // 🛑 Use mock if no API key or during development
   const useMock = !process.env.OPENAI_API_KEY;
 
   if (useMock) {
-    await new Promise((r) => setTimeout(r, 1000)); // simulate delay
+    await new Promise((r) => setTimeout(r, 1000));
     return Response.json({
-      summary: `📝 Mock Summary: This note has ${content.split(" ").length} words. Looks good!`,
+      summary: `📝 Mock Summary: This note has ${
+        content.split(" ").length
+      } words. Looks good!`,
     });
   }
 
@@ -25,7 +25,8 @@ export async function POST(req) {
         messages: [
           {
             role: "system",
-            content: "Summarize the following note in clear, concise bullet points.",
+            content:
+              "Summarize the following note in clear, concise bullet points.",
           },
           { role: "user", content },
         ],
@@ -51,12 +52,12 @@ export async function POST(req) {
     }
 
     return Response.json({
-      summary: data.choices?.[0]?.message?.content || "AI did not return a summary.",
+      summary:
+        data.choices?.[0]?.message?.content || "AI did not return a summary.",
     });
   } catch (error) {
     console.error("Summarization failed:", error);
 
-    // ✅ Fallback to mock if error occurs during real API call
     return Response.json({
       summary: `📝 Mock Summary (fallback): ${content.slice(0, 60)}...`,
     });
