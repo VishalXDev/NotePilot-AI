@@ -1,36 +1,145 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+ 🧠 NotePilot AI – A Personal Productivity App
 
-## Getting Started
+A sleek fullstack productivity tool that empowers users to manage notes and tasks in one unified dashboard — with optional AI-powered summarization via OpenAI.
 
-First, run the development server:
+---
+
+## 🔗 Live Demo
+
+🌐 [https://my-workspace.vercel.app](https://my-workspace.vercel.app) *(deployed with Vercel)*
+
+---
+
+## 🚀 Features
+
+- ✅ Secure login & registration (NextAuth.js with Credentials Provider)
+- 🗒️ **Notes tab** – create, edit, delete notes with AI-powered summary option
+- ✅ **Tasks tab** – add, update, mark as done, delete
+- 🔒 Protected routes — only accessible when authenticated
+- 🧠 Bonus: Summarize notes using **GPT-3.5** via OpenAI API
+- 🌙 Global state with **Zustand** for a smooth experience
+- 💡 Clean, responsive UI built with **Tailwind CSS**
+
+---
+
+## 🧱 Tech Stack
+
+| Layer           | Tech                                  |
+|----------------|----------------------------------------|
+| Frontend        | Next.js 15 (App Router) + Tailwind CSS |
+| Backend API     | Next.js API Routes                    |
+| Authentication  | NextAuth.js (Credentials Provider)    |
+| State Management| Zustand                                |
+| Database        | MongoDB + Mongoose                    |
+| Bonus AI        | OpenAI API (GPT-3.5 Turbo)            |
+
+---
+
+## 📁 Folder Structure
 
 ```bash
+note-pilot-ai/
+├── app/
+│   ├── api/
+│   │   ├── auth/
+│   │   │   ├── signup/route.js
+│   │   │   └── login/route.js
+│   │   ├── notes/
+│   │   │   ├── route.js
+│   │   │   └── [id]/route.js
+│   │   ├── tasks/
+│   │   │   ├── route.js
+│   │   │   └── [id]/route.js
+│   │   └── summarize/route.js
+│   ├── login/page.jsx
+│   ├── register/page.jsx
+│   └── dashboard/
+│       ├── layout.jsx
+│       ├── page.jsx
+│       ├── notes/page.jsx
+│       └── tasks/page.jsx
+├── components/
+│   ├── NoteCard.jsx
+│   ├── TaskItem.jsx
+│   └── Modal.jsx
+├── models/
+│   ├── User.js
+│   ├── Note.js
+│   └── Task.js
+├── lib/
+│   └── db.js
+├── store/
+│   └── index.js
+├── Providers.jsx
+├── .env.local
+└── README.md
+⚙️ Setup Instructions
+bash
+Copy
+Edit
+git clone https://github.com/VishalXDev/my-workspace.git
+cd my-workspace
+
+# Install dependencies
+npm install
+
+# Add environment variables
+touch .env.local
+.env.local
+env
+Copy
+Edit
+MONGO_URI=your_mongodb_connection_string
+NEXTAUTH_SECRET=your_nextauth_secret
+OPENAI_API_KEY=your_openai_api_key   # optional for AI summaries
+Run the app locally
+bash
+Copy
+Edit
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+🔐 Auth Flow (Credentials)
+Register → /register
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Login → /login
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Protected Dashboard → /dashboard
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Auth handled securely with NextAuth Credentials Provider
 
-## Learn More
+🔌 API Routes (Postman Ready)
+📥 Import collection: MyWorkspace.postman_collection.json
 
-To learn more about Next.js, take a look at the following resources:
+Route	Method	Description
+/api/auth/signup	POST	Register user
+/api/auth/login	POST	Login via credentials
+/api/notes	GET, POST	Get or create notes
+/api/notes/:id	PUT, DELETE	Update or delete note
+/api/tasks	GET, POST	Get or create tasks
+/api/tasks/:id	PUT, DELETE	Update or delete task
+/api/summarize	POST	Generate note summary AI
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+🧠 Bonus: AI Summarization
+AI assistant powered by OpenAI's GPT-3.5
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Click "Summarize with AI" on any note
 
-## Deploy on Vercel
+Sends content to /api/summarize
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Result shown in a modal
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Graceful fallback if quota is exceeded or no API key
+
+👤 Author
+Vishal Dwivedy
+🔗 github.com/VishalXDev
+
+✅ Project Status
+📂 Submitted for Maketronics Internship Assignment
+
+🕒 Built in ~12 hours
+
+✅ Fully Functional with Bonus Features
+
+🔥 Ready for production / demo
+
+Feel free to fork, explore, or enhance the project. Contributions welcome!

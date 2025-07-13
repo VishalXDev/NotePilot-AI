@@ -1,0 +1,198 @@
+Project Walkthrough: How My Code Works
+Project Name: NotePilot AI
+Stack: Next.js (App Router), Tailwind CSS, MongoDB, Mongoose, Zustand, NextAuth.js, OpenAI API
+
+🔁 1. Authentication Flow
+📂 Files:
+app/api/auth/signup/route.js
+
+app/api/auth/login/route.js
+
+lib/db.js
+
+models/User.js
+
+app/register/page.jsx
+
+app/login/page.jsx
+
+Providers.jsx (wraps SessionProvider)
+
+🔧 How it works:
+Users sign up or log in with email + password.
+
+Backend saves users in MongoDB using the User model.
+
+Authentication is handled by NextAuth.js with Credentials Provider.
+
+The session is managed via cookies (JWT-based).
+
+Protected routes like /dashboard use session to allow or block access.
+
+🏠 2. Dashboard Layout + Routing
+📂 Files:
+app/dashboard/layout.jsx
+
+app/dashboard/page.jsx → default redirect (e.g., to /dashboard/notes)
+
+app/dashboard/notes/page.jsx
+
+app/dashboard/tasks/page.jsx
+
+🧠 How it works:
+After login, users are redirected to the /dashboard.
+
+Layout contains sidebar navigation (Notes | Tasks | Logout).
+
+Pages under dashboard/notes and dashboard/tasks render based on tabs.
+
+📒 3. Notes Functionality (CRUD)
+📂 Files:
+app/dashboard/notes/page.jsx
+
+components/NoteCard.jsx
+
+store/index.js (Zustand state)
+
+app/api/notes/route.js → handles GET & POST
+
+app/api/notes/[id]/route.js → handles PUT & DELETE
+
+models/Note.js
+
+⚙️ How it works:
+Notes are stored in MongoDB with user-specific association.
+
+Zustand holds global notes, loading, and error states.
+
+Users can:
+
+Create: form in notes/page.jsx → sends POST to /api/notes
+
+Edit/Delete: from NoteCard.jsx → uses PUT/DELETE API
+
+AI Summarize: calls /api/summarize
+
+✅ 4. Tasks Functionality
+📂 Files:
+app/dashboard/tasks/page.jsx
+
+components/TaskItem.jsx
+
+store/index.js
+
+app/api/tasks/route.js → GET/POST
+
+app/api/tasks/[id]/route.js → PUT/DELETE
+
+models/Task.js
+
+⚙️ How it works:
+Users can add a task (POST), toggle done (PUT), or delete (DELETE).
+
+Zustand stores the task list globally.
+
+Simple UI lets users check/uncheck or remove items quickly.
+
+💡 5. Global State (Zustand)
+📂 File:
+store/index.js
+
+🧠 How it works:
+Central place for:
+
+notes, tasks
+
+loading, error
+
+Avoids prop drilling and allows shared state across components.
+
+🧠 6. AI Summarization (Bonus Feature)
+📂 Files:
+components/NoteCard.jsx → Summarize button
+
+components/Modal.jsx → Displays AI summary
+
+app/api/summarize/route.js → OpenAI API logic
+
+🤖 How it works:
+When “Summarize with AI” is clicked:
+
+Note content is sent to /api/summarize
+
+That route uses fetch() to call OpenAI’s GPT-3.5-Turbo model
+
+Response is returned as bullet-point summary
+
+Summary is shown in a modal
+
+If API fails or quota is exceeded, a fallback message is shown.
+
+🗃️ 7. Database Models
+📂 File:
+models/User.js, Note.js, Task.js
+
+⚙️ Mongoose Schemas:
+Each schema includes:
+
+Required fields (e.g., title, content, done)
+
+user reference for associating items to the logged-in user
+
+🔐 8. Protected Routes + Session Management
+📂 Files:
+middleware.js (optional for route protection)
+
+Providers.jsx (wraps session globally)
+
+✅ How it works:
+Routes under /dashboard are protected.
+
+If user session is invalid, they are redirected to /login.
+
+useSession() in pages can be used for conditional rendering.
+
+💅 9. UI & Styling
+📂 Files:
+app/globals.css
+
+Tailwind classes in all components
+
+📐 How it works:
+Responsive UI
+
+Clean card-based layout
+
+Loading spinners, disabled states, and toast notifications (react-hot-toast)
+
+📦 10. Environment Setup
+📂 File:
+.env.local
+
+env
+Copy
+Edit
+MONGO_URI=your_mongo_uri
+NEXTAUTH_SECRET=random_generated_string
+OPENAI_API_KEY=your_openai_api_key (optional)
+📤 Deployment
+Hosted on Vercel
+
+MongoDB hosted via MongoDB Atlas
+
+Ready to import to Postman using included .postman_collection.json
+
+🏁 Summary
+This app is built with a clean, modular architecture where:
+
+APIs are in app/api/
+
+Auth handled securely via NextAuth
+
+Notes/Tasks stored in MongoDB with full CRUD
+
+Zustand handles state efficiently
+
+Bonus AI summarization adds an intelligent touch
+
+The code is structured for clarity, ease of testing, and extendability.
